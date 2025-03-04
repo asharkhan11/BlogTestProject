@@ -1,4 +1,4 @@
-package com.blog.BlogApplication.users.dtos;
+package com.blog.BlogApplication.entities.users.dtos;
 
 public record LoginResponseDTO(String token) {
 }

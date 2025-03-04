@@ -1,6 +1,6 @@
 package com.blog.BlogApplication.repositories;
 
-import com.letroca.entities.users.User;
+import com.blog.BlogApplication.entities.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;

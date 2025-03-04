@@ -1,8 +1,8 @@
 package com.blog.BlogApplication.controllers;
 
-import com.blog.BlogApplication.users.dtos.AuthenticationDTO;
-import com.blog.BlogApplication.users.dtos.LoginResponseDTO;
-import com.blog.BlogApplication.users.dtos.RegisterDTO;
+import com.blog.BlogApplication.entities.users.dtos.AuthenticationDTO;
+import com.blog.BlogApplication.entities.users.dtos.LoginResponseDTO;
+import com.blog.BlogApplication.entities.users.dtos.RegisterDTO;
 import com.blog.BlogApplication.entities.users.User;
 import com.blog.BlogApplication.infra.security.TokenService;
 import com.blog.BlogApplication.repositories.UserRepository;
