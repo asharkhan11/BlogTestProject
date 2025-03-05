@@ -31,15 +31,19 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private UserRole role;
 
-    public User(String name, String email, String password, UserRole role) {
+    public User(String name, String email, String username, String password, UserRole role) {
         this.name = name;
         this.email = email;
+        this.username = username;
         this.password = password;
         this.role = role;
     }

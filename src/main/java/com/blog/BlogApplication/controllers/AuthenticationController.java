@@ -6,6 +6,7 @@ import com.blog.BlogApplication.entities.users.dtos.RegisterDTO;
 import com.blog.BlogApplication.entities.users.User;
 import com.blog.BlogApplication.infra.security.TokenService;
 import com.blog.BlogApplication.repositories.UserRepository;
+import com.blog.BlogApplication.services.GmailValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,22 @@ public class AuthenticationController {
      */
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity login(@RequestBody AuthenticationDTO data) {
-        var credentials = new UsernamePasswordAuthenticationToken(data.email(), data.password());
-        var auth = this.authenticationManager.authenticate(credentials);
+        String loginIdentifier = data.email(); // It could be email or username
 
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        // Determine if the input is an email or username
+        if (GmailValidation.isValidGmail(loginIdentifier)) {
+            // If it's an email, authenticate with email
+            var credentials = new UsernamePasswordAuthenticationToken(loginIdentifier, data.password());
+            var auth = authenticationManager.authenticate(credentials);
+            var token = tokenService.generateToken((User) auth.getPrincipal());
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        } else {
+            // If it's not an email, treat it as a username
+            var credentials = new UsernamePasswordAuthenticationToken(loginIdentifier, data.password());
+            var auth = authenticationManager.authenticate(credentials);
+            var token = tokenService.generateToken((User) auth.getPrincipal());
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        }
     }
 
     /**
@@ -55,7 +66,7 @@ public class AuthenticationController {
         if (this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User user = new User(data.name(), data.email(), encryptedPassword, data.role());
+        User user = new User(data.name(), data.email(), data.username(), encryptedPassword, data.role());
 
         this.userRepository.save(user);
 
