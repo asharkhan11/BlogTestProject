@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,21 +40,29 @@ public class AuthenticationController {
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity login(@RequestBody AuthenticationDTO data) {
         String loginIdentifier = data.email(); // It could be email or username
+        UserDetails user;
 
         // Determine if the input is an email or username
+
         if (GmailValidation.isValidGmail(loginIdentifier)) {
-            // If it's an email, authenticate with email
-            var credentials = new UsernamePasswordAuthenticationToken(loginIdentifier, data.password());
-            var auth = authenticationManager.authenticate(credentials);
-            var token = tokenService.generateToken((User) auth.getPrincipal());
-            return ResponseEntity.ok(new LoginResponseDTO(token));
+            // If it's an email, find user by email
+            user = userRepository.findByEmail(loginIdentifier);
+            if (user == null) {
+                throw new UsernameNotFoundException("Email not found");
+            }
         } else {
+            // If it's a username, find user by username
+            user = userRepository.findByUsername(loginIdentifier);
+            if (user == null) {
+                throw new UsernameNotFoundException("Username not found");
+            }
+        }
             // If it's not an email, treat it as a username
             var credentials = new UsernamePasswordAuthenticationToken(loginIdentifier, data.password());
             var auth = authenticationManager.authenticate(credentials);
             var token = tokenService.generateToken((User) auth.getPrincipal());
             return ResponseEntity.ok(new LoginResponseDTO(token));
-        }
+
     }
 
     /**
@@ -63,7 +73,7 @@ public class AuthenticationController {
      */
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity register(@RequestBody RegisterDTO data) {
-        if (this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
+        if (this.userRepository.findByUsername(data.email())!= null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User user = new User(data.name(), data.email(), data.username(), encryptedPassword, data.role());
