@@ -21,10 +21,8 @@ public class BlogController {
     @GetMapping("/search")
     public ResponseEntity<List<Blog>> searchBlogs(@RequestParam("query") String query) {
        // List<Blog> blogs = blogService.searchBlogs(query);
-        if (query.contains(",")) {
-            return ResponseEntity.ok(blogService.searchBlogsByMultipleKeywords(query));
-        } else {
+
             return ResponseEntity.ok(blogService.searchBlogs(query));
-        }
+
     }
 }
