@@ -1,12 +1,12 @@
-package com.blog.BlogApplication.controllers;
+package com.blog.BlogApplication.loginService.controllers;
 
-import com.blog.BlogApplication.entities.users.dtos.AuthenticationDTO;
-import com.blog.BlogApplication.entities.users.dtos.LoginResponseDTO;
-import com.blog.BlogApplication.entities.users.dtos.RegisterDTO;
-import com.blog.BlogApplication.entities.users.User;
-import com.blog.BlogApplication.infra.security.TokenService;
-import com.blog.BlogApplication.repositories.UserRepository;
-import com.blog.BlogApplication.services.GmailValidation;
+import com.blog.BlogApplication.loginService.users.dtos.AuthenticationDTO;
+import com.blog.BlogApplication.loginService.users.dtos.LoginResponseDTO;
+import com.blog.BlogApplication.loginService.users.dtos.RegisterDTO;
+import com.blog.BlogApplication.loginService.users.User;
+import com.blog.BlogApplication.loginService.security.TokenService;
+import com.blog.BlogApplication.loginService.repositories.UserRepository;
+import com.blog.BlogApplication.loginService.services.GmailValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

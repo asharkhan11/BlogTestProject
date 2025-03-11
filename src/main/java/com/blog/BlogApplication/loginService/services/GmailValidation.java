@@ -1,4 +1,4 @@
-package com.blog.BlogApplication.services;
+package com.blog.BlogApplication.loginService.services;
 import org.springframework.stereotype.Service;
 import java.util.regex.*;
 

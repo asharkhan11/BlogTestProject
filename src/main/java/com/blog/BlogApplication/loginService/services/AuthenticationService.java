@@ -1,6 +1,6 @@
-package com.blog.BlogApplication.services;
+package com.blog.BlogApplication.loginService.services;
 
-import com.blog.BlogApplication.repositories.UserRepository;
+import com.blog.BlogApplication.loginService.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

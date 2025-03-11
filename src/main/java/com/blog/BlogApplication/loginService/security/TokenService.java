@@ -1,10 +1,10 @@
-package com.blog.BlogApplication.infra.security;
+package com.blog.BlogApplication.loginService.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.blog.BlogApplication.entities.users.User;
+import com.blog.BlogApplication.loginService.users.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

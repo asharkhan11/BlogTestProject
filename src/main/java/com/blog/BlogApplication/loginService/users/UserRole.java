@@ -1,4 +1,4 @@
-package com.blog.BlogApplication.entities.users;
+package com.blog.BlogApplication.loginService.users;
 
 public enum UserRole {
     ADMIN("admin"),

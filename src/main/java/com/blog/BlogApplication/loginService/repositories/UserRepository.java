@@ -1,11 +1,9 @@
-package com.blog.BlogApplication.repositories;
+package com.blog.BlogApplication.loginService.repositories;
 
-import com.blog.BlogApplication.entities.users.User;
+import com.blog.BlogApplication.loginService.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

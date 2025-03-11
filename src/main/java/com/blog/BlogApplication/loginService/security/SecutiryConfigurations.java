@@ -1,4 +1,4 @@
-package com.blog.BlogApplication.infra.security;
+package com.blog.BlogApplication.loginService.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

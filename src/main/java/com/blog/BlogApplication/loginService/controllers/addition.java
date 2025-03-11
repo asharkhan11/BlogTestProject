@@ -1,4 +1,4 @@
-package com.blog.BlogApplication.controllers;
+package com.blog.BlogApplication.loginService.controllers;
 
 
 import org.springframework.web.bind.annotation.PostMapping;
