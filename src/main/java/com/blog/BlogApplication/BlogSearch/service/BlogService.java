@@ -17,11 +17,9 @@ public class BlogService {
         return blogRepository.searchBlogs(query);
     }
     public List<Blog> searchBlogsByMultipleKeywords(String query) {
-        String[] keywords = query.split(","); // Split by comma
-        if (keywords.length >= 2) {
-            return blogRepository.searchBlogsByMultipleKeywords(keywords[0].trim(), keywords[1].trim());
-        } else {
+        //String[] keywords = query.split(","); // Split by comma
+
             return blogRepository.searchBlogs(query); // If only one keyword, use default search
         }
     }
-}
+
