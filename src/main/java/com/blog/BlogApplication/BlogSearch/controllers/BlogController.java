@@ -1,7 +1,7 @@
 package com.blog.BlogApplication.BlogSearch.controllers;
 
-import com.blog.BlogApplication.BlogSearch.entity.Blog;
-import com.blog.BlogApplication.BlogSearch.service.BlogService;
+import com.blog.BlogApplication.BlogSearch.entity.Search;
+import com.blog.BlogApplication.BlogSearch.ser.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +16,13 @@ import java.util.List;
 public class BlogController {
 
     @Autowired
-    private BlogService blogService;
+    private SearchService searchService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<Blog>> searchBlogs(@RequestParam("query") String query) {
+    public ResponseEntity<List<Search>> searchBlogs(@RequestParam("query") String query) {
        // List<Blog> blogs = blogService.searchBlogs(query);
 
-            return ResponseEntity.ok(blogService.searchBlogs(query));
+            return ResponseEntity.ok(searchService.searchBlogs(query));
 
     }
 }

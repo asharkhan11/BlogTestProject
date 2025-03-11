@@ -9,7 +9,7 @@ import lombok.Setter;
 @Table(name = "blogs")
 @Getter
 @Setter
-public class Blog {
+public class Search {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
