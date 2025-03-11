@@ -16,17 +16,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle generic exceptions
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "INTERNAL_SERVER_ERROR",
-                "Something went wrong, please try again later.",
-                ex.getMessage(),
-                request.getDescription(false)
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
     // Handle specific exceptions (e.g., Resource Not Found)
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -38,18 +27,6 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    // Handle database constraint violation exceptions
-    @ExceptionHandler({DataIntegrityViolationException.class, SQLIntegrityConstraintViolationException.class})
-    public ResponseEntity<ErrorResponse> handleDatabaseException(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "DATABASE_ERROR",
-                "A database error occurred. Please ensure your input is valid.",
-                ex.getMessage(),
-                request.getDescription(false)
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     // Handle entity not found in the database
@@ -76,4 +53,25 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateKeyException(DataIntegrityViolationException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "DUPLICATE_ENTRY",
+                "The provided email is already in use.",
+                ex.getMostSpecificCause().getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "INTERNAL_ERROR",
+                "An unexpected error occurred.",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
