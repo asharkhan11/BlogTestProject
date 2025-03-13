@@ -1,5 +1,6 @@
 package com.blog.BlogApplication.globleExceptionHandler.handler;
 
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.blog.BlogApplication.globleExceptionHandler.DTO.ErrorResponse;
 import com.blog.BlogApplication.loginService.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -7,11 +8,14 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -74,4 +78,43 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    //JWT Exception
+    @ExceptionHandler(JWTCreationException.class)
+    public ResponseEntity<ErrorResponse> handleJWTCreationException(JWTCreationException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "JWT_ERROR",
+                "Error while generating token.",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    //error Responce
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "UNAUTHORIZED",
+                "Authentication failed. Invalid credentials or token missing.",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    // Forbidden Access (403) - When user lacks permission
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "FORBIDDEN",
+                "You do not have permission to access this resource.",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+
+
 }
