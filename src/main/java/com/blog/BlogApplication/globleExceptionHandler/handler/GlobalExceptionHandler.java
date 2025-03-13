@@ -1,6 +1,7 @@
 package com.blog.BlogApplication.globleExceptionHandler.handler;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.blog.BlogApplication.globleExceptionHandler.DTO.ErrorResponse;
 import com.blog.BlogApplication.loginService.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -90,6 +91,19 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(JWTDecodeException.class)
+    public ResponseEntity<ErrorResponse> handleJWTDecodeException(JWTDecodeException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "UNAUTHORIZED",
+                "Invalid or missing JWT token.",
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+
 
     //error Responce
     @ExceptionHandler(AuthenticationException.class)

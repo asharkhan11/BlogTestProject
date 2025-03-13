@@ -24,34 +24,41 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recoverToken(request);
-        var subject = tokenService.validateToken(token);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-        if (token != null) {
-            //var subject = tokenService.validateToken(token);
-            //UserDetails user = userRepository.findByEmail(subject);
-            UserDetails user=userRepository.findByEmail(subject);
-
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("Extracted email from token: " + subject);
-
-        }
-        //UserDetails user = userRepository.findByEmail(subject);
-        UserDetails user=userRepository.findByUsername(subject);
-
-        if (user == null) {
-            System.out.println("User not found for email: " + subject);
-            System.out.println("request is : " + request);
+        String token = this.recoverToken(request); // Retrieve token from request
+        if (token == null || token.isEmpty()) {
+            System.out.println("No token found, proceeding without authentication.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        String subject = tokenService.validateToken(token); // Validate token and extract subject
+        if (subject == null || subject.isEmpty()) {
+            System.out.println("Invalid or expired token, proceeding without authentication.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Fetch user by email
+        UserDetails user = userRepository.findByEmail(subject);
+
+        if (user == null) {
+            System.out.println("User not found for email: " + subject);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Set authentication in security context
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        System.out.println("User authenticated: " + subject);
         filterChain.doFilter(request, response);
     }
+
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");

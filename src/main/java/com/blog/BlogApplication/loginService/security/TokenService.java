@@ -33,6 +33,7 @@ public class TokenService {
     }
 
     public String validateToken(String token) {
+        System.out.println("Token received: " + token);
         try {
             Algorithm algorithm = Algorithm.HMAC256(this.secret);
             return JWT.require(algorithm)
@@ -40,9 +41,9 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-
         } catch (JWTVerificationException exception) {
-            return "";
+            System.out.println("Token validation failed: " + exception.getMessage());
+            return null; // Returning null instead of an empty string
         }
     }
 
