@@ -110,5 +110,52 @@ http://127.0.0.1:4545/api/blogs/search?query=java
 - Replace `<your_token_here>` with the actual token received during login.
 - More API endpoints will be added in the future.
 
+---
+## 📌 Blogging Application To-Do List
+
+### 🚀 User Account Management
+- [ ] **User Preferences:**
+   - Ask users for their preferred blog categories during account creation.
+   - Provide blog suggestions based on these preferences.
+- [ ] **Authentication & Security:**
+   - Implement a **Logout API** using Redis for JWT blacklisting.
+   - Develop a **Reset Password** and **Forgot Password** feature.
+   - Integrate **OTP Validation**:
+      - During **User Registration**.
+      - During **Forgot Password** recovery.
+
+## 📚 Blog Features
+- [ ] **Popular Blogs API:**
+   - Fetch blogs **based on likes**.
+   - Fetch blogs **based on category**.
+   - Fetch blogs **based on user preferences**.
+- [ ] **Best Blogs of the Week:**
+   - Show the top 5 blogs **from related categories**.
+- [ ] **Blog Monitoring & Statistics:**
+   - Track **view count** for each blog.
+   - If feasible, implement **blog statistics** such as:
+      - Total popularity score of blogs.
+
+## 🛠️ User Features
+- [ ] **User Profile Page:**
+   - Add an **option to upload a profile picture**.
+   - Include **blog monitoring** on the profile page.
+- [ ] **User Settings:**
+   - Allow users to manage their settings and preferences.
+
+## 💬 Engagement & Interaction
+- [ ] **Comments & Ratings System:**
+   - Allow users to **comment** on blogs.
+   - Implement a **sub-comment** system (threaded replies).
+   - Add a **rating system** for blogs.
+
+---  
+✅ *This list can be updated as needed.*
+
+
+
+
+
+---
 Happy Coding! 🚀
 
