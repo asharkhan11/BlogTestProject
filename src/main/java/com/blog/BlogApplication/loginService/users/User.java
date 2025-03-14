@@ -1,10 +1,7 @@
 package com.blog.BlogApplication.loginService.users;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +25,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String name;
 
+    @Setter
+    @Getter
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -60,8 +59,9 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
